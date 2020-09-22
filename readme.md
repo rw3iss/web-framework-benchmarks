@@ -7,6 +7,7 @@
 brew update
 brew install golang
 go get github.com/go-sql-driver/mysql
+go run server.go
 ```
 
 ### .NET Core 5:
