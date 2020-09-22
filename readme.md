@@ -17,10 +17,6 @@ dotnet publish
 dotnet bin/Debug/net5.0/benchmark.dll
 ```
 
-## Platform
-
-2015 MacBook Pro 13" i7 3.1Ghz, 16GB Ram
-
 _______________
 
 ## Test: 
@@ -38,11 +34,15 @@ ab -k -l -c 50 -n 10000 http://localhost:8081/benchmark
     "email": "email@email.com" 
 }
 _______________
-&nbsp;
+
 
 # Results (see bottom for summary):
 
-### 10k requests, 50 concurrent:
+## Platform
+
+2015 13" MacBook Pro - i7 3.1Ghz, 16GB Ram
+
+## 10k requests, 50 concurrent:
 _______________
 
 #### Go (POST - Db Write):
