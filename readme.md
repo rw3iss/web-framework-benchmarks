@@ -17,6 +17,10 @@ dotnet publish
 dotnet bin/Debug/net5.0/benchmark.dll
 ```
 
+## Platform
+
+2015 MacBook Pro 13" i7 3.1Ghz, 16GB Ram
+
 _______________
 
 ## Test: Reading and Writing to SQL Database, with Apache Benchmark:
