@@ -22,7 +22,7 @@ dotnet bin/Debug/net5.0/benchmark.dll
 _______________
 
 ## Test: 
-Reading and Writing to SQL Database, with Apache Benchmark.
+Reading and Writing to SQL Database, and JSON only (no DB driver bias), with Apache Benchmark.
 
 ### Write:
 ```
