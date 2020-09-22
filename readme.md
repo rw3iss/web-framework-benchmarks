@@ -1,4 +1,5 @@
 # Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC)
+
 ## Test: Reading and Writing to SQL Database, with Apache Benchmark:
 
 ### Write:
