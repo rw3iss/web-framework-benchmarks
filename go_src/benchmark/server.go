@@ -21,8 +21,8 @@ type User struct {
 
 
 func main() {
-    http.HandleFunc("/json", jsonTestHandler)
-    http.HandleFunc("/benchmark", benchmarkTestHandler)
+	http.HandleFunc("/benchmark", benchmarkTestHandler)
+    http.HandleFunc("/benchmark/json", jsonTestHandler)
 
 	initDB();
 

@@ -25,16 +25,32 @@ _______________
 Reading and Writing to SQL Database, with Apache Benchmark.
 
 ### Write:
-ab -k -l -p payload.json -T application/json -c 50 -n 10000 http://localhost:8081/benchmark
+```
+ab -k -l -p payload.json -T application/json -c 50 -n 10000 http://localhost:5000/benchmark
+```
 
 ### Read:
-ab -k -l -c 50 -n 10000 http://localhost:8081/benchmark
+```
+ab -k -l -c 50 -n 10000 http://localhost:5000/benchmark
+```
+
+### Read JSON Only (doesn't touch DB):
+```
+ab -k -l -c 50 -n 10000 http://localhost:5000/benchmark/json
+```
 
 ### JSON file for POST payload (not used by code):
+```
 { 
     "username": "username", 
     "email": "email@email.com" 
 }
+```
+
+### Database Schema (for DB tests):
+```
+create table users ( id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) NOT NULL, email VARCHAR(255) );
+```
 _______________
 
 
@@ -50,216 +66,209 @@ _______________
 #### Go (POST - Db Write):
 ```
 Concurrency Level:      50
-Time taken for tests:   1.590 seconds
+Time taken for tests:   1.338 seconds
 Complete requests:      10000
 Failed requests:        0
 Keep-Alive requests:    10000
 Total transferred:      1358894 bytes
 Total body sent:        2330000
 HTML transferred:       48894 bytes
-Requests per second:    6290.48 [#/sec] (mean)
-Time per request:       7.949 [ms] (mean)
-Time per request:       0.159 [ms] (mean, across all concurrent requests)
-Transfer rate:          834.78 [Kbytes/sec] received
-                        1431.33 kb/s sent
-                        2266.11 kb/s total
+Requests per second:    7475.72 [#/sec] (mean)
+Time per request:       6.688 [ms] (mean)
+Time per request:       0.134 [ms] (mean, across all concurrent requests)
+Transfer rate:          992.06 [Kbytes/sec] received
+                        1701.02 kb/s sent
+                        2693.08 kb/s total
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.2      0       4
-Processing:     1    8   5.8      6      63
-Waiting:        0    8   5.8      6      63
-Total:          1    8   5.8      6      63
+Connect:        0    0   0.1      0       2
+Processing:     1    7   4.0      6      52
+Waiting:        0    7   4.0      5      52
+Total:          1    7   4.0      6      52
 
 Percentage of the requests served within a certain time (ms)
   50%      6
-  66%      8
-  75%      9
-  80%     11
-  90%     15
-  95%     20
-  98%     26
-  99%     32
- 100%     63 (longest request)
+  66%      7
+  75%      8
+  80%      9
+  90%     12
+  95%     15
+  98%     18
+  99%     21
+ 100%     52 (longest request)
 ```
 
 #### Go (GET - Db Read):
 ```
 Concurrency Level:      50
-Time taken for tests:   1.317 seconds
+Time taken for tests:   1.183 seconds
 Complete requests:      10000
 Failed requests:        0
 Keep-Alive requests:    10000
 Total transferred:      1890000 bytes
 HTML transferred:       570000 bytes
-Requests per second:    7592.43 [#/sec] (mean)
-Time per request:       6.586 [ms] (mean)
-Time per request:       0.132 [ms] (mean, across all concurrent requests)
-Transfer rate:          1401.34 [Kbytes/sec] received
+Requests per second:    8454.86 [#/sec] (mean)
+Time per request:       5.914 [ms] (mean)
+Time per request:       0.118 [ms] (mean, across all concurrent requests)
+Transfer rate:          1560.52 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.1      0       2
-Processing:     1    7   4.7      5      78
-Waiting:        0    7   4.7      5      78
-Total:          1    7   4.7      5      78
+Processing:     1    6   3.8      5     105
+Waiting:        0    6   3.8      5     105
+Total:          1    6   3.8      5     105
 
 Percentage of the requests served within a certain time (ms)
   50%      5
   66%      6
   75%      7
   80%      8
-  90%     13
-  95%     17
-  98%     20
-  99%     24
- 100%     78 (longest request)
+  90%     10
+  95%     13
+  98%     16
+  99%     18
+ 100%    105 (longest request)
 ```
+
+#### Go (GET - JSON Only):
+```
+Concurrency Level:      50
+Time taken for tests:   0.286 seconds
+Complete requests:      10000
+Failed requests:        0
+Keep-Alive requests:    10000
+Total transferred:      1890000 bytes
+HTML transferred:       570000 bytes
+Requests per second:    34946.10 [#/sec] (mean)
+Time per request:       1.431 [ms] (mean)
+Time per request:       0.029 [ms] (mean, across all concurrent requests)
+Transfer rate:          6450.01 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       2
+Processing:     0    1   1.2      1      10
+Waiting:        0    1   1.2      1      10
+Total:          0    1   1.2      1      10
+
+Percentage of the requests served within a certain time (ms)
+  50%      1
+  66%      1
+  75%      2
+  80%      2
+  90%      3
+  95%      4
+  98%      6
+  99%      6
+ 100%     10 (longest request)
+ ```
 
 -----------------------------
 
 
-#### .NET Core 5.0 RC (POST - Db Write) (development build):
+#### .NET Core 5.0 RC (production build) (POST - Db Write):
 ```
 Concurrency Level:      50
-Time taken for tests:   17.454 seconds
+Time taken for tests:   13.472 seconds
 Complete requests:      10000
 Failed requests:        0
 Keep-Alive requests:    0
 Total transferred:      1428894 bytes
 Total body sent:        2330000
 HTML transferred:       38894 bytes
-Requests per second:    572.93 [#/sec] (mean)
-Time per request:       87.270 [ms] (mean)
-Time per request:       1.745 [ms] (mean, across all concurrent requests)
-Transfer rate:          79.95 [Kbytes/sec] received
-                        130.36 kb/s sent
-                        210.31 kb/s total
+Requests per second:    742.30 [#/sec] (mean)
+Time per request:       67.358 [ms] (mean)
+Time per request:       1.347 [ms] (mean, across all concurrent requests)
+Transfer rate:          103.58 [Kbytes/sec] received
+                        168.90 kb/s sent
+                        272.48 kb/s total
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0   25  19.0     25     289
-Processing:     5   59  46.3     51     644
-Waiting:        2   44  44.4     37     644
-Total:          9   84  49.6     79     646
+Connect:        0   18  62.7     16    2763
+Processing:     4   47 137.2     33    2052
+Waiting:        3   34 106.1     24    2035
+Total:         10   65 151.4     49    2791
 
 Percentage of the requests served within a certain time (ms)
-  50%     79
-  66%     91
-  75%     99
-  80%    105
-  90%    122
-  95%    138
-  98%    164
-  99%    316
- 100%    646 (longest request)
-````
-
-#### .NET Core 5.0 RC (GET - Db Read) (development build):
-```
-Concurrency Level:      50
-Time taken for tests:   8.932 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1950000 bytes
-HTML transferred:       560000 bytes
-Requests per second:    1119.60 [#/sec] (mean)
-Time per request:       44.659 [ms] (mean)
-Time per request:       0.893 [ms] (mean, across all concurrent requests)
-Transfer rate:          213.21 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   15  12.5     13     193
-Processing:     3   29  17.9     25     205
-Waiting:        1   20  15.2     16     194
-Total:         11   44  22.8     40     211
-
-Percentage of the requests served within a certain time (ms)
-  50%     40
-  66%     49
-  75%     54
-  80%     57
-  90%     68
-  95%     77
-  98%     87
-  99%    103
- 100%    211 (longest request)
-```
-
------------------------------
-
-
-#### .NET Core 5.0 RC (POST - Db Write) (production build):
-```
-Concurrency Level:      50
-Time taken for tests:   15.164 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1428894 bytes
-Total body sent:        2330000
-HTML transferred:       38894 bytes
-Requests per second:    659.44 [#/sec] (mean)
-Time per request:       75.822 [ms] (mean)
-Time per request:       1.516 [ms] (mean, across all concurrent requests)
-Transfer rate:          92.02 [Kbytes/sec] received
-                        150.05 kb/s sent
-                        242.07 kb/s total
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   22  27.3     21     415
-Processing:     3   51  50.4     43     640
-Waiting:        2   36  48.9     30     640
-Total:         11   73  58.4     66     641
-
-Percentage of the requests served within a certain time (ms)
-  50%     66
-  66%     74
-  75%     80
-  80%     85
-  90%     99
-  95%    120
-  98%    175
-  99%    459
- 100%    641 (longest request)
-```
-
-#### .NET Core 5.0 RC (GET - Db Read) (production build):
-```
-Concurrency Level:      50
-Time taken for tests:   15.296 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1950000 bytes
-HTML transferred:       560000 bytes
-Requests per second:    653.76 [#/sec] (mean)
-Time per request:       76.481 [ms] (mean)
-Time per request:       1.530 [ms] (mean, across all concurrent requests)
-Transfer rate:          124.50 [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        1   29 142.3     17    2439
-Processing:     1   46 115.0     31    2445
-Waiting:        1   29  73.1     21    2444
-Total:         21   75 182.1     50    2463
-
-Percentage of the requests served within a certain time (ms)
-  50%     50
-  66%     58
-  75%     64
-  80%     69
-  90%     85
-  95%    113
-  98%    235
+  50%     49
+  66%     61
+  75%     67
+  80%     71
+  90%     80
+  95%     88
+  98%     99
   99%    552
- 100%   2463 (longest request)
+ 100%   2791 (longest request)
 ```
 
+#### .NET Core 5.0 RC (production build) (GET - Db Read):
+```
+Concurrency Level:      50
+Time taken for tests:   8.528 seconds
+Complete requests:      10000
+Failed requests:        0
+Keep-Alive requests:    0
+Total transferred:      1950000 bytes
+HTML transferred:       560000 bytes
+Requests per second:    1172.63 [#/sec] (mean)
+Time per request:       42.639 [ms] (mean)
+Time per request:       0.853 [ms] (mean, across all concurrent requests)
+Transfer rate:          223.30 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   13  11.0     13     504
+Processing:     2   29  35.6     25     532
+Waiting:        0   19  26.7     17     506
+Total:          9   42  37.5     38     558
+
+Percentage of the requests served within a certain time (ms)
+  50%     38
+  66%     44
+  75%     47
+  80%     49
+  90%     56
+  95%     62
+  98%     69
+  99%     87
+ 100%    558 (longest request)
+```
+
+#### .NET Core 5.0 RC (production build) (GET - JSON Only):
+```
+Concurrency Level:      50
+Time taken for tests:   6.718 seconds
+Complete requests:      10000
+Failed requests:        0
+Keep-Alive requests:    0
+Total transferred:      1850000 bytes
+HTML transferred:       460000 bytes
+Requests per second:    1488.64 [#/sec] (mean)
+Time per request:       33.588 [ms] (mean)
+Time per request:       0.672 [ms] (mean, across all concurrent requests)
+Transfer rate:          268.94 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   13  34.1     10     561
+Processing:     1   20  36.3     16     568
+Waiting:        0   14  30.0     10     562
+Total:          6   33  49.9     26     587
+
+Percentage of the requests served within a certain time (ms)
+  50%     26
+  66%     30
+  75%     34
+  80%     37
+  90%     44
+  95%     50
+  98%     79
+  99%    433
+ 100%    587 (longest request)
+```
 
 _______________
 
@@ -267,20 +276,21 @@ _______________
 
 
 ### Go (POST - Db Write):
-Requests per second:    6290.48 [#/sec] (mean)
+Requests per second:    7475.72 [#/sec] (mean)
 
 ### Go (GET - Db Read):
-Requests per second:    7592.43 [#/sec] (mean)
+Requests per second:    8454.86 [#/sec] (mean)
 
-### .NET Core 5.0 RC (POST - Db Write) (development build):
-Requests per second:    572.93 [#/sec] (mean)
+### Go (GET - JSON Only):
+Requests per second:    34946.10 [#/sec] (mean)
 
-### .NET Core 5.0 RC (GET - Db Read) (development build):
-Requests per second:    1119.60 [#/sec] (mean)
+### .NET Core 5.0 RC (production build) (POST - Db Write):
+Requests per second:    742.30 [#/sec] (mean)
 
-### .NET Core 5.0 RC (POST - Db Write) (production build):
-Requests per second:    659.44 [#/sec] (mean)
+### .NET Core 5.0 RC (production build) (GET - Db Read):
+Requests per second:    1172.63 [#/sec] (mean)
 
-### .NET Core 5.0 RC (GET - Db Read) (production build):
-Requests per second:    653.76 [#/sec] (mean)
+### .NET Core 5.0 RC (production build) (GET - JSON Only):
+Requests per second:    1488.64 [#/sec] (mean)
+
 
