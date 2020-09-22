@@ -1,5 +1,24 @@
 # Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC)
 
+## Setup
+
+### Go:
+```
+brew update
+brew install golang
+go get github.com/go-sql-driver/mysql
+```
+
+### .NET Core 5:
+```
+dotnet new webapi
+dotnet add package MySqlConnector
+dotnet publish
+dotnet bin/Debug/net5.0/benchmark.dll
+```
+
+_______________
+
 ## Test: Reading and Writing to SQL Database, with Apache Benchmark:
 
 ### Write:
