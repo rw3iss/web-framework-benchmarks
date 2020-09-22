@@ -1,6 +1,6 @@
 # Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC)
 
-## Setup
+## Setup (Mac OS)
 
 ### Go:
 ```
