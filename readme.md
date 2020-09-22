@@ -11,6 +11,7 @@ go get github.com/go-sql-driver/mysql
 
 ### .NET Core 5:
 ```
+Install .pkg from: https://dotnet.microsoft.com/download/dotnet/5.0
 dotnet new webapi
 dotnet add package MySqlConnector
 dotnet publish
@@ -117,7 +118,7 @@ Percentage of the requests served within a certain time (ms)
 -----------------------------
 
 
-#### .NET Core 5.0 (POST - Db Write) (development build):
+#### .NET Core 5.0 RC (POST - Db Write) (development build):
 ```
 Concurrency Level:      50
 Time taken for tests:   17.454 seconds
@@ -153,7 +154,7 @@ Percentage of the requests served within a certain time (ms)
  100%    646 (longest request)
 ````
 
-#### .NET Core 5.0 (GET - Db Read) (development build):
+#### .NET Core 5.0 RC (GET - Db Read) (development build):
 ```
 Concurrency Level:      50
 Time taken for tests:   8.932 seconds
@@ -189,7 +190,7 @@ Percentage of the requests served within a certain time (ms)
 -----------------------------
 
 
-#### .NET Core 5.0 (POST - Db Write) (production build):
+#### .NET Core 5.0 RC (POST - Db Write) (production build):
 ```
 Concurrency Level:      50
 Time taken for tests:   15.164 seconds
@@ -225,7 +226,7 @@ Percentage of the requests served within a certain time (ms)
  100%    641 (longest request)
 ```
 
-#### .NET Core 5.0 (GET - Db Read) (production build):
+#### .NET Core 5.0 RC (GET - Db Read) (production build):
 ```
 Concurrency Level:      50
 Time taken for tests:   15.296 seconds
@@ -270,15 +271,15 @@ Requests per second:    6290.48 [#/sec] (mean)
 ### Go (GET - Db Read):
 Requests per second:    7592.43 [#/sec] (mean)
 
-### .NET Core 5.0 (POST - Db Write) (development build):
+### .NET Core 5.0 RC (POST - Db Write) (development build):
 Requests per second:    572.93 [#/sec] (mean)
 
-### .NET Core 5.0 (GET - Db Read) (development build):
+### .NET Core 5.0 RC (GET - Db Read) (development build):
 Requests per second:    1119.60 [#/sec] (mean)
 
-### .NET Core 5.0 (POST - Db Write) (production build):
+### .NET Core 5.0 RC (POST - Db Write) (production build):
 Requests per second:    659.44 [#/sec] (mean)
 
-### .NET Core 5.0 (GET - Db Read) (production build):
+### .NET Core 5.0 RC (GET - Db Read) (production build):
 Requests per second:    653.76 [#/sec] (mean)
 
