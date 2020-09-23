@@ -1,4 +1,4 @@
-# Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC)
+# Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC) vs. Rust 1.42 (actix-web framework v3)
 
 ## Setup (Mac OS)
 
@@ -17,6 +17,12 @@ dotnet new webapi
 dotnet add package MySqlConnector
 dotnet publish
 dotnet bin/Debug/net5.0/benchmark.dll
+```
+
+### Rust:
+```
+curl https://sh.rustup.rs -sSf | sh
+cargo run
 ```
 
 _______________
@@ -270,27 +276,64 @@ Percentage of the requests served within a certain time (ms)
  100%    587 (longest request)
 ```
 
-_______________
+-----------------------------
+
+#### Rust 1.42 (actix-web v3) (GET - JSON Only):
+```
+Concurrency Level:      50
+Time taken for tests:   0.665 seconds
+Complete requests:      10000
+Failed requests:        0
+Keep-Alive requests:    10000
+Total transferred:      1880000 bytes
+HTML transferred:       560000 bytes
+Requests per second:    15039.15 [#/sec] (mean)
+Time per request:       3.325 [ms] (mean)
+Time per request:       0.066 [ms] (mean, across all concurrent requests)
+Transfer rate:          2761.09 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       3
+Processing:     0    3   1.7      3      19
+Waiting:        0    3   1.7      3      19
+Total:          0    3   1.7      3      19
+
+Percentage of the requests served within a certain time (ms)
+  50%      3
+  66%      3
+  75%      4
+  80%      4
+  90%      5
+  95%      7
+  98%      8
+  99%     10
+ 100%     19 (longest request)
+```
+_________________________
+
 
 ## Summary:
-
 
 ### Go (POST - Db Write):
 Requests per second:    7475.72 [#/sec] (mean)
 
-### Go (GET - Db Read):
-Requests per second:    8454.86 [#/sec] (mean)
-
-### Go (GET - JSON Only):
-Requests per second:    34946.10 [#/sec] (mean)
-
 ### .NET Core 5.0 RC (production build) (POST - Db Write):
 Requests per second:    742.30 [#/sec] (mean)
+
+
+### Go (GET - Db Read):
+Requests per second:    8454.86 [#/sec] (mean)
 
 ### .NET Core 5.0 RC (production build) (GET - Db Read):
 Requests per second:    1172.63 [#/sec] (mean)
 
+
+### Go (GET - JSON Only):
+Requests per second:    34946.10 [#/sec] (mean)
+
+### Rust 1.42 (actix-web v3) (GET - JSON Only):
+Requests per second:    15039.15 [#/sec] (mean)
+
 ### .NET Core 5.0 RC (production build) (GET - JSON Only):
 Requests per second:    1488.64 [#/sec] (mean)
-
-
