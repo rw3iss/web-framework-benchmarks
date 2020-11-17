@@ -1,3 +1,4 @@
 .DS_Store
 node_modules
 src/drogon/drogon_src
+src/justjs/just-lib
