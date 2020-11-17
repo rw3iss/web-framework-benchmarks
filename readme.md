@@ -1,4 +1,6 @@
-# Dockerized benchmark between web frameworks - Go (net/http), Go (fasthttp), Rust (hyper), Rust (actix-web), Drogon (C++), JustJS (node alternative), .NET Core 5, and more to come.
+# Dockerized Benchmark of Modern Web Frameworks
+
+## Go (net/http), Go (fasthttp), Rust (hyper), Rust (actix-web), Drogon (C++), JustJS (node alternative), .NET Core 5, and more to come.
 
 See results.txt for my local Docker results.
 
