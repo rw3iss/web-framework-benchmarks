@@ -1,0 +1,1 @@
+{"rustc":66165631676752942,"features":"[\"alloc\", \"default\"]","target":4654680736203621481,"profile":4339006351771724982,"path":6623208747470141362,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"release/.fingerprint/tinyvec-3c50fc017bbed66b/dep-lib-tinyvec"}}],"rustflags":[],"metadata":15698686973737482152,"config":0}

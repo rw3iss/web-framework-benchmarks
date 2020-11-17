@@ -1,0 +1,22 @@
+{
+  "name": "benchmarks",
+  "version": "1.0.0",
+  "description": "## Setup (Mac OS)",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rw3iss/Go-vs-.NETCore-5-Benchmark.git"
+  },
+  "author": "Ryan Weiss (rw3iss@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rw3iss/Go-vs-.NETCore-5-Benchmark/issues"
+  },
+  "homepage": "https://github.com/rw3iss/Go-vs-.NETCore-5-Benchmark#readme",
+  "dependencies": {
+    "ab-result": "^1.0.2"
+  }
+}

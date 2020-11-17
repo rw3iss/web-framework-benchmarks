@@ -1,0 +1,24 @@
+TARGET = Some("x86_64-unknown-linux-gnu")
+OPT_LEVEL = Some("3")
+HOST = Some("x86_64-unknown-linux-gnu")
+CC_x86_64-unknown-linux-gnu = None
+CC_x86_64_unknown_linux_gnu = None
+HOST_CC = None
+CC = Some("gcc-8")
+CFLAGS_x86_64-unknown-linux-gnu = None
+CFLAGS_x86_64_unknown_linux_gnu = None
+HOST_CFLAGS = None
+CFLAGS = None
+CRATE_CC_NO_DEFAULTS = None
+DEBUG = Some("false")
+CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2")
+running: "gcc-8" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-Wall" "-Wextra" "-o" "/workspaces/benchmarks/src/rust/may-minihttp/target/release/build/generator-b77093bdf467b9e9/out/src/detail/asm/asm_x86_64_sysv_elf_gas.o" "-c" "src/detail/asm/asm_x86_64_sysv_elf_gas.S"
+exit code: 0
+AR_x86_64-unknown-linux-gnu = None
+AR_x86_64_unknown_linux_gnu = None
+HOST_AR = None
+AR = Some("gcc-ar-8")
+running: "gcc-ar-8" "crs" "/workspaces/benchmarks/src/rust/may-minihttp/target/release/build/generator-b77093bdf467b9e9/out/libasm.a" "/workspaces/benchmarks/src/rust/may-minihttp/target/release/build/generator-b77093bdf467b9e9/out/src/detail/asm/asm_x86_64_sysv_elf_gas.o"
+exit code: 0
+cargo:rustc-link-lib=static=asm
+cargo:rustc-link-search=native=/workspaces/benchmarks/src/rust/may-minihttp/target/release/build/generator-b77093bdf467b9e9/out

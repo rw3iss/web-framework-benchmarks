@@ -1,0 +1,80 @@
+#![deny(warnings)]
+
+use std::convert::Infallible;
+use hyper::service::{make_service_fn, service_fn};
+use hyper::{Body, Request, Response, Server};
+use serde;
+use rand::Rng;
+
+#[derive(Serialize)]
+struct User<'a> {
+    id: i16,
+    username: &'a str,
+    email: &'a str,
+}
+
+async fn route(req: Request<Body>) -> Result<Response<Body>, Infallible> {
+    match (req.method(), req.path()) {
+        (&Method::Get, "/json") => {
+            println!("Reached json ... "); //POST: 200 OK
+        }
+        (&Method::Get, "/") => {
+            response.set_status(StatusCode::NotFound);
+            hello()
+        }
+    };
+
+
+}
+
+async fn hello(_session: Session, _req: HttpRequest) -> Result<Response<Body>, Infallible> {
+    Ok(Response::new(Body::from("Hello World!")))
+}
+
+async fn json(_session: Session, _req: HttpRequest) -> Result<Response<Body>, Infallible> {
+    let user = User { id: 1, username: "username", email: "email@email.com" };
+    let users = serde::json(
+
+    HttpResponse::Ok().json(user)
+}
+
+#[tokio::main]
+pub async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    // For every connection, we must make a `Service` to handle all
+    // incoming HTTP requests on said connection.
+    let make_svc = make_service_fn(|_conn| {
+        // This is the `Service` that will handle the connection.
+        // `service_fn` is a helper to convert a function that
+        // returns a Response into a `Service`.
+        async { Ok::<_, Infallible>(service_fn(route)) }
+    });
+
+    let addr = ([127, 0, 0, 1], 3000).into();
+
+    let server = Server::bind(&addr).serve(make_svc);
+
+    println!("Listening on http://{}", addr);
+
+    server.await?;
+
+    Ok(())
+}
+
+
+
+pub struct MakeSvc;
+
+impl<T> Service<T> for MakeSvc {
+    type Response = Svc;
+    type Error = std::io::Error;
+    type Future = future::Ready<Result<Self::Response, Self::Error>>;
+
+    fn poll_ready(&mut self, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+        Ok(()).into()
+    }
+
+    fn call(&mut self, _: T) -> Self::Future {
+        future::ok(Svc)
+    }
+}
+

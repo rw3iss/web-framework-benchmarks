@@ -1,0 +1,1 @@
+{"rustc":66165631676752942,"features":"[]","target":15509542548401928124,"profile":4339006351771724982,"path":16826909099887462672,"deps":[[13192848980265738351,"build_script_build",false,7628645835829363494]],"local":[{"CheckDepInfo":{"dep_info":"release/.fingerprint/maybe-uninit-bd175a1da584a226/dep-lib-maybe-uninit"}}],"rustflags":[],"metadata":7192422394193811959,"config":0}

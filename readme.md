@@ -1,16 +1,48 @@
-# Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC) vs. Rust 1.42 (actix-web framework v3)
+# Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC) vs. Rust 1.42 (actix-web v3)
+
+See results.txt for my local Docker results.
+
+Note: Primarily these tests only test JSON responses at the moment.
 
 ## Setup (Mac OS)
 
+* Install VS Code - Remote - Container extension
+* Open folder in VS Code, and 'open in container' when prompted (it will take a while to build the first time - 20 minutes on 2015 Macbook Pro)
+* Let the container build, and when finished, open terminal
+* `npm install`
+* Start any of the given benchmark servers (each of these is set to run on http://localhost:8080)
+* Tune the parameters in run.js, and then run it: `node run.js` to test any given server below.
+
+
 ### Go:
 ```
-brew update
-brew install golang
+cd src/go
 go get github.com/go-sql-driver/mysql
 go run server.go
 ```
 
-### .NET Core 5:
+### Rust:
+```
+cd src/rust/hyper
+cargo run --release
+```
+
+### Drogon:
+```
+cd src/drogon/benchmark/build
+cmake ..
+make
+./benchmark
+```
+
+### JustJS:
+```
+Todo: see JustJS repo for installation/docker setup.
+cd src/justjs/benchmark
+npm start
+```
+
+### .NET Core 5  (TODO: needs installation fix / not tested in Docker yet)
 ```
 Install .pkg from: https://dotnet.microsoft.com/download/dotnet/5.0
 dotnet new webapi
@@ -19,321 +51,182 @@ dotnet publish
 dotnet bin/Debug/net5.0/benchmark.dll
 ```
 
-### Rust:
-```
-curl https://sh.rustup.rs -sSf | sh
-cargo run
-```
+### Todo: Java
 
 _______________
 
-## Test: 
-Reading and Writing to SQL Database, and JSON only (no DB driver bias), with Apache Benchmark.
 
-### Write:
+## Docker Container Results (Early 2015 Macbook Pro 13" 3.1Ghz):
+
+* (See results.txt)
+
+
+## Go (with net/http):
+------------------
 ```
-ab -k -l -p payload.json -T application/json -c 50 -n 10000 http://localhost:5000/benchmark
-```
+c=50
+ { timeTaken: 0.53, rps: 20559.15, tps: 0.05, rate: 3834.76 }
+ { timeTaken: 0.44, rps: 23875.14, tps: 0.04, rate: 4453.27 }
+ { timeTaken: 0.5, rps: 20635.87, tps: 0.05, rate: 3808.77 }
+ { timeTaken: 0.54, rps: 22003.53, tps: 0.05, rate: 4061.2 }
+ { timeTaken: 0.51, rps: 22428.85, tps: 0.05, rate: 4139.7 }
+ { timeTaken: 0.52, rps: 19987.12, tps: 0.05, rate: 3689.0 }
 
-### Read:
-```
-ab -k -l -c 50 -n 10000 http://localhost:5000/benchmark
-```
+ { timeTaken: 0.36, rps: 28235.43, tps: 0.04, rate: 5459.59 }
+ { timeTaken: 0.5, rps: 21157.28, tps: 0.05, rate: 4090.96 }
+ { timeTaken: 0.57, rps: 19839.28, tps: 0.06, rate: 3836.11 }
+ { timeTaken: 0.58, rps: 18418.84, tps: 0.06, rate: 3561.45 }
+ { timeTaken: 0.37, rps: 27236.09, tps: 0.04, rate: 5266.35 }
 
-### Read JSON Only (doesn't touch DB):
-```
-ab -k -l -c 50 -n 10000 http://localhost:5000/benchmark/json
-```
+c=250
+ { timeTaken: 0.42, rps: 26508.69, tps: 0.04, rate: 4892.72 }
+ { timeTaken: 0.40, rps: 26534.68, tps: 0.04, rate: 4897.51 }
+ { timeTaken: 0.45, rps: 23422.13, tps: 0.04, rate: 4323.03 }
+ { timeTaken: 0.45, rps: 22661.16, tps: 0.04, rate: 4182.58 }
 
-### JSON file for POST payload (not used by code):
-```
-{ 
-    "username": "username", 
-    "email": "email@email.com" 
-}
-```
+c=1000
+ { timeTaken: 0.46, rps: 24555.12, tps: 0.05, rate: 4532.15 }
+ { timeTaken: 0.38, rps: 26834.81, tps: 0.04, rate: 4952.91 }
+ { timeTaken: 0.42, rps: 25001.62, tps: 0.04, rate: 4614.56 }
+ { timeTaken: 0.49, rps: 24320.42, tps: 0.05, rate: 4488.83 }
 
-### Database Schema (for DB tests):
-```
-create table users ( id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50) NOT NULL, email VARCHAR(255) );
-```
-_______________
+ { timeTaken: 0.32, rps: 32115.00, tps: 0.03, rate: 6209.74 }
+ { timeTaken: 0.49, rps: 24966.65, tps: 0.05, rate: 4827.53 }
+ { timeTaken: 0.48, rps: 21606.65, tps: 0.05, rate: 4177.85 }
+ { timeTaken: 0.42, rps: 26172.82, tps: 0.04, rate: 5060.76 }
 
-
-# Results (see bottom for summary):
-
-## Platform
-
-2015 13" MacBook Pro - i7 3.1Ghz, 16GB Ram
-
-## 10k requests, 50 concurrent:
-_______________
-
-#### Go (POST - Db Write):
-```
-Concurrency Level:      50
-Time taken for tests:   1.338 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    10000
-Total transferred:      1358894 bytes
-Total body sent:        2330000
-HTML transferred:       48894 bytes
-Requests per second:    7475.72 [#/sec] (mean)
-Time per request:       6.688 [ms] (mean)
-Time per request:       0.134 [ms] (mean, across all concurrent requests)
-Transfer rate:          992.06 [Kbytes/sec] received
-                        1701.02 kb/s sent
-                        2693.08 kb/s total
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       2
-Processing:     1    7   4.0      6      52
-Waiting:        0    7   4.0      5      52
-Total:          1    7   4.0      6      52
-
-Percentage of the requests served within a certain time (ms)
-  50%      6
-  66%      7
-  75%      8
-  80%      9
-  90%     12
-  95%     15
-  98%     18
-  99%     21
- 100%     52 (longest request)
+ { timeTaken: 0.4, rps: 26479.92, tps: 0.04, rate: 4939.13 }
 ```
 
-#### Go (GET - Db Read):
+## Go (with fasthttp):
 ```
-Concurrency Level:      50
-Time taken for tests:   1.183 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    10000
-Total transferred:      1890000 bytes
-HTML transferred:       570000 bytes
-Requests per second:    8454.86 [#/sec] (mean)
-Time per request:       5.914 [ms] (mean)
-Time per request:       0.118 [ms] (mean, across all concurrent requests)
-Transfer rate:          1560.52 [Kbytes/sec] received
+c=50:
+*{ timeTaken: 0.25, rps: 41727.84, tps: 0.02, rate: 8149.97 }
+ { timeTaken: 0.26, rps: 38826.48, tps: 0.03, rate: 7583.3 }
+ { timeTaken: 0.4, rps: 28761.36, tps: 0.04, rate: 5617.45 }
+ { timeTaken: 0.39, rps: 28690.93, tps: 0.04, rate: 5603.7 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       2
-Processing:     1    6   3.8      5     105
-Waiting:        0    6   3.8      5     105
-Total:          1    6   3.8      5     105
+ { timeTaken: 0.32, rps: 33324.92, tps: 0.03, rate: 6508.77 }
+ { timeTaken: 0.28, rps: 35946.28, tps: 0.03, rate: 7020.76 }
+ { timeTaken: 0.34, rps: 32216.69, tps: 0.03, rate: 6292.32 }
+ { timeTaken: 0.38, rps: 28769.44, tps: 0.04, rate: 5619.03 }
 
-Percentage of the requests served within a certain time (ms)
-  50%      5
-  66%      6
-  75%      7
-  80%      8
-  90%     10
-  95%     13
-  98%     16
-  99%     18
- 100%    105 (longest request)
+c=100:
+ { timeTaken: 0.26, rps: 39815.31, tps: 0.03, rate: 7776.43 }
+ { timeTaken: 0.29, rps: 35718.27, tps: 0.03, rate: 6976.22 }
+ { timeTaken: 0.39, rps: 30300.61, tps: 0.04, rate: 5918.09 }
+ { timeTaken: 0.31, rps: 32984.34, tps: 0.03, rate: 6442.25 }
+
+ { timeTaken: 0.25, rps: 41479.45, tps: 0.02, rate: 8101.45 }
+ { timeTaken: 0.3, rps: 37431.63, tps: 0.03, rate: 7310.86 }
+ { timeTaken: 0.35, rps: 34139.64, tps: 0.03, rate: 6667.9 }
+ { timeTaken: 0.34, rps: 32041.14, tps: 0.03, rate: 6258.04 }
+
+c=1000:
+ { timeTaken: 0.3, rps: 34375.15, tps: 0.03, rate: 6713.9 }
+ { timeTaken: 0.33, rps: 33055.04, tps: 0.03, rate: 6456.06 }
+ { timeTaken: 0.4, rps: 30125.91, tps: 0.04, rate: 5883.96 }
+ { timeTaken: 0.42, rps: 28797.73, tps: 0.04, rate: 5624.56 }
 ```
 
-#### Go (GET - JSON Only):
+
+------------------
+## Rust (hyper):
 ```
-Concurrency Level:      50
-Time taken for tests:   0.286 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    10000
-Total transferred:      1890000 bytes
-HTML transferred:       570000 bytes
-Requests per second:    34946.10 [#/sec] (mean)
-Time per request:       1.431 [ms] (mean)
-Time per request:       0.029 [ms] (mean, across all concurrent requests)
-Transfer rate:          6450.01 [Kbytes/sec] received
+c=50
+*{ timeTaken: 0.23, rps: 45311.09, tps: 0.02, rate: 5973.63 }
+ { timeTaken: 0.26, rps: 40082.62, tps: 0.03, rate: 5284.33 }
+ { timeTaken: 0.69, rps: 17068.49, tps: 0.07, rate: 2250.24 }
+ { timeTaken: 0.34, rps: 34189.97, tps: 0.03, rate: 4507.47 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       2
-Processing:     0    1   1.2      1      10
-Waiting:        0    1   1.2      1      10
-Total:          0    1   1.2      1      10
+ { timeTaken: 0.42, rps: 29600.85, tps: 0.04, rate: 3902.46 }
+ { timeTaken: 0.46, rps: 23968.67, tps: 0.05, rate: 3159.93 }
+ { timeTaken: 0.29, rps: 38945.22, tps: 0.03, rate: 5134.38 }
+ { timeTaken: 0.34, rps: 32399.25, tps: 0.03, rate: 4271.39 }
 
-Percentage of the requests served within a certain time (ms)
-  50%      1
-  66%      1
-  75%      2
-  80%      2
-  90%      3
-  95%      4
-  98%      6
-  99%      6
- 100%     10 (longest request)
- ```
+ { timeTaken: 0.27, rps: 39160.52, tps: 0.03, rate: 5162.76 }
+ { timeTaken: 0.31, rps: 38098.53, tps: 0.03, rate: 5022.76 }
+ { timeTaken: 0.29, rps: 39106.03, tps: 0.03, rate: 5155.58 }
+ { timeTaken: 0.32, rps: 34026.22, tps: 0.03, rate: 4485.88 }
 
------------------------------
+c=100
+ { timeTaken: 0.48, rps: 22664.93, tps: 0.05, rate: 2988.05 }
+ { timeTaken: 0.34, rps: 30092.82, tps: 0.03, rate: 3967.31 }
+ { timeTaken: 0.37, rps: 30210.51, tps: 0.04, rate: 3982.83 }
+ { timeTaken: 0.38, rps: 27448.9, tps: 0.04, rate: 3618.75 }
 
+c=250
+  { timeTaken: 0.45, rps: 23237.99, tps: 0.05, rate: 3063.6 }
+  { timeTaken: 0.58, rps: 20908.98, tps: 0.06, rate: 2756.55 }
+  { timeTaken: 0.45, rps: 23318.29, tps: 0.05, rate: 3074.19 }
+  { timeTaken: 0.42, rps: 25143.78, tps: 0.04, rate: 3314.85 }
 
-#### .NET Core 5.0 RC (production build) (POST - Db Write):
-```
-Concurrency Level:      50
-Time taken for tests:   13.472 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1428894 bytes
-Total body sent:        2330000
-HTML transferred:       38894 bytes
-Requests per second:    742.30 [#/sec] (mean)
-Time per request:       67.358 [ms] (mean)
-Time per request:       1.347 [ms] (mean, across all concurrent requests)
-Transfer rate:          103.58 [Kbytes/sec] received
-                        168.90 kb/s sent
-                        272.48 kb/s total
+c=1000
+ { timeTaken: 0.51, rps: 21968.91, tps: 0.05, rate: 2896.29 }
+ { timeTaken: 0.49, rps: 23011.21, tps: 0.05, rate: 3033.71 }
+ { timeTaken: 0.5, rps: 22180.29, tps: 0.05, rate: 2924.16 }
+ { timeTaken: 0.43, rps: 23448.48, tps: 0.04, rate: 3091.35 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   18  62.7     16    2763
-Processing:     4   47 137.2     33    2052
-Waiting:        3   34 106.1     24    2035
-Total:         10   65 151.4     49    2791
-
-Percentage of the requests served within a certain time (ms)
-  50%     49
-  66%     61
-  75%     67
-  80%     71
-  90%     80
-  95%     88
-  98%     99
-  99%    552
- 100%   2791 (longest request)
+ { timeTaken: 0.31, rps: 33472.31, tps: 0.03, rate: 4412.85 }
+ { timeTaken: 0.45, rps: 24219.5, tps: 0.05, rate: 3193 }
+ { timeTaken: 0.46, rps: 23917.19, tps: 0.05, rate: 3153.14 }
+ { timeTaken: 0.38, rps: 26239.31, tps: 0.04, rate: 3459.28 }
 ```
 
-#### .NET Core 5.0 RC (production build) (GET - Db Read):
+## Rust (actix-web):
+------------------
 ```
-Concurrency Level:      50
-Time taken for tests:   8.528 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1950000 bytes
-HTML transferred:       560000 bytes
-Requests per second:    1172.63 [#/sec] (mean)
-Time per request:       42.639 [ms] (mean)
-Time per request:       0.853 [ms] (mean, across all concurrent requests)
-Transfer rate:          223.30 [Kbytes/sec] received
+c=50
+ { timeTaken: 0.43, rps: 24903.15, tps: 0.04, rate: 4572.06 }
+ { timeTaken: 0.45, rps: 24938.99, tps: 0.05, rate: 4578.64 }
+ { timeTaken: 0.31, rps: 32072.63, tps: 0.03, rate: 5888.33 }
+ { timeTaken: 0.35, rps: 29056.29, tps: 0.04, rate: 5334.55 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   13  11.0     13     504
-Processing:     2   29  35.6     25     532
-Waiting:        0   19  26.7     17     506
-Total:          9   42  37.5     38     558
-
-Percentage of the requests served within a certain time (ms)
-  50%     38
-  66%     44
-  75%     47
-  80%     49
-  90%     56
-  95%     62
-  98%     69
-  99%     87
- 100%    558 (longest request)
+c=1000
+ { timeTaken: 0.48, rps: 22006.46, tps: 0.05, rate: 4040.25 }
+ { timeTaken: 0.49, rps: 25289.13, tps: 0.05, rate: 4642.93 }
+ { timeTaken: 0.44, rps: 24463.7, tps: 0.04, rate: 4491.38 }
+ { timeTaken: 0.51, rps: 22980.34, tps: 0.05, rate: 4219.05 }
 ```
 
-#### .NET Core 5.0 RC (production build) (GET - JSON Only):
+
+## JustJS:
+------------------
 ```
-Concurrency Level:      50
-Time taken for tests:   6.718 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    0
-Total transferred:      1850000 bytes
-HTML transferred:       460000 bytes
-Requests per second:    1488.64 [#/sec] (mean)
-Time per request:       33.588 [ms] (mean)
-Time per request:       0.672 [ms] (mean, across all concurrent requests)
-Transfer rate:          268.94 [Kbytes/sec] received
+c=50
+ { timeTaken: 2.95, rps: 3792.57, tps: 0.3, rate: 618.52 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0   13  34.1     10     561
-Processing:     1   20  36.3     16     568
-Waiting:        0   14  30.0     10     562
-Total:          6   33  49.9     26     587
-
-Percentage of the requests served within a certain time (ms)
-  50%     26
-  66%     30
-  75%     34
-  80%     37
-  90%     44
-  95%     50
-  98%     79
-  99%    433
- 100%    587 (longest request)
+c=1000
+ { timeTaken: 2.33, rps: 4410.32, tps: 0.23, rate: 719.26 }
 ```
 
------------------------------
-
-#### Rust 1.42 (actix-web v3) (GET - JSON Only):
+## Drogon:
+------------------
 ```
-Concurrency Level:      50
-Time taken for tests:   0.665 seconds
-Complete requests:      10000
-Failed requests:        0
-Keep-Alive requests:    10000
-Total transferred:      1880000 bytes
-HTML transferred:       560000 bytes
-Requests per second:    15039.15 [#/sec] (mean)
-Time per request:       3.325 [ms] (mean)
-Time per request:       0.066 [ms] (mean, across all concurrent requests)
-Transfer rate:          2761.09 [Kbytes/sec] received
+c=50
+*{ timeTaken: 0.27, rps: 37207.2, tps: 0.03, rate: 7485.04 }
+ { timeTaken: 0.4, rps: 27064.39, tps: 0.04, rate: 5444.59 }
+ { timeTaken: 0.41, rps: 25841.77, tps: 0.04, rate: 5198.64 }
+ { timeTaken: 0.39, rps: 27169.53, tps: 0.04, rate: 5465.74 }
 
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-Connect:        0    0   0.1      0       3
-Processing:     0    3   1.7      3      19
-Waiting:        0    3   1.7      3      19
-Total:          0    3   1.7      3      19
+ { timeTaken: 0.55, rps: 25478.02, tps: 0.06, rate: 5125.46 }
+ { timeTaken: 0.31, rps: 32623.34, tps: 0.03, rate: 6562.9 }
+ { timeTaken: 0.5, rps: 23840.75, tps: 0.05, rate: 4796.09 }
+ { timeTaken: 0.31, rps: 32949.84, tps: 0.03, rate: 6628.58 }
 
-Percentage of the requests served within a certain time (ms)
-  50%      3
-  66%      3
-  75%      4
-  80%      4
-  90%      5
-  95%      7
-  98%      8
-  99%     10
- 100%     19 (longest request)
+ { timeTaken: 0.32, rps: 31528.42, tps: 0.03, rate: 6342.63 }
+ { timeTaken: 0.46, rps: 25469.61, tps: 0.05, rate: 5123.77 }
+ { timeTaken: 0.38, rps: 29496.24, tps: 0.04, rate: 5933.81 }
+ { timeTaken: 0.32, rps: 32979.32, tps: 0.03, rate: 6634.51 }
+
+c=1000
+ { timeTaken: 0.44, rps: 23422.02, tps: 0.04, rate: 4711.85 }
+ { timeTaken: 0.41, rps: 25231.58, tps: 0.04, rate: 5075.89 }
+ { timeTaken: 0.39, rps: 26147.84, tps: 0.04, rate: 5260.21 }
+ { timeTaken: 0.49, rps: 23160.67, tps: 0.05, rate: 4659.28 }
+
+ { timeTaken: 0.56, rps: 18952.2, tps: 0.06, rate: 3812.65 }
+ { timeTaken: 0.43, rps: 23968.84, tps: 0.04, rate: 4821.86 }
+ { timeTaken: 0.49, rps: 21537.82, tps: 0.05, rate: 4332.8 }
+ { timeTaken: 0.48, rps: 22263.87, tps: 0.05, rate: 4478.87 }
 ```
-_________________________
-
-
-## Summary:
-
-### Go (POST - Db Write):
-Requests per second:    7475.72 [#/sec] (mean)
-
-### .NET Core 5.0 RC (production build) (POST - Db Write):
-Requests per second:    742.30 [#/sec] (mean)
-
-
-### Go (GET - Db Read):
-Requests per second:    8454.86 [#/sec] (mean)
-
-### .NET Core 5.0 RC (production build) (GET - Db Read):
-Requests per second:    1172.63 [#/sec] (mean)
-
-
-### Go (GET - JSON Only):
-Requests per second:    34946.10 [#/sec] (mean)
-
-### Rust 1.42 (actix-web v3) (GET - JSON Only):
-Requests per second:    15039.15 [#/sec] (mean)
-
-### .NET Core 5.0 RC (production build) (GET - JSON Only):
-Requests per second:    1488.64 [#/sec] (mean)
