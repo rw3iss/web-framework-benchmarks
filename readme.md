@@ -1,4 +1,4 @@
-# Benchmark Between Go (v1.15.2) vs. .NET Core 5.0 (RC) vs. Rust 1.42 (actix-web v3)
+# Dockerized benchmark between web frameworks - Go (net/http), Go (fasthttp), Rust (hyper), Rust (actix-web), Drogon (C++), JustJS (node alternative), .NET Core 5, and more to come.
 
 See results.txt for my local Docker results.
 
