@@ -7,7 +7,7 @@ OLD / OUTDATED BELOW (run on older machine, but still the same indication/benchm
 
 
 ------------------
-Go:
+Go (with net/http):
 ------------------
 
 c=50
@@ -44,7 +44,9 @@ c=1000
  { timeTaken: 0.4, rps: 26479.92, tps: 0.04, rate: 4939.13 }
 
 
-With fasthttp:
+------------------
+Go (with fasthttp):
+------------------
 
 c=50:
  { timeTaken: 0.25, rps: 41727.84, tps: 0.02, rate: 8149.97 }
