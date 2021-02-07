@@ -8,8 +8,8 @@ struct Person {
     username: String,
 }
 
-pub async fn test_handler(ctx: Context) -> String {
-    format!("test called, state_thing was: {}", ctx.state.state_thing)
+pub async fn text_handler(ctx: Context) -> String {
+    format!("Hello world")
 }
 
 pub async fn json_handler(ctx: Context) -> String {

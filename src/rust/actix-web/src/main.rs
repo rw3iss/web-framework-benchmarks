@@ -20,6 +20,12 @@ async fn p404() -> Result<fs::NamedFile> {
     Ok(fs::NamedFile::open("static/404.html")?.set_status_code(StatusCode::NOT_FOUND))
 }
 
+/// simple index handler
+#[get("/")]
+async fn index(session: Session, req: HttpRequest) -> HttpResponse {
+    HttpResponse::Ok().body("Hello world")
+}
+
 #[get("/json")]
 async fn json(_session: Session, _req: HttpRequest) -> HttpResponse {
     let user = User { id: 1, username: "username", email: "email@email.com" };
@@ -60,6 +66,9 @@ async fn main() -> io::Result<()> {
             // enable logger - always register actix-web Logger middleware last
             //.wrap(middleware::Logger::default())
             // register simple route, handle all methods
+
+            .service(index)
+
             .service(json)
 
             .service(welcome)

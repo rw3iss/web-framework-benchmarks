@@ -1,0 +1,22 @@
+# TEXT:
+
+ab -k -c 50 -n 10000 http://127.0.0.1:8080/
+Requests per second:    48796.44 [#/sec] (mean)
+
+ab -k -c 500 -n 10000 http://127.0.0.1:8080/
+Requests per second:    45323.72 [#/sec] (mean)
+
+ab -k -c 1000 -n 10000 http://127.0.0.1:8080/
+Requests per second:    40685.63 [#/sec] (mean)
+
+
+# JSON:
+
+ab -k -c 50 -n 10000 http://127.0.0.1:8080/json
+Requests per second:    47893.41 [#/sec] (mean)
+
+ab -k -c 500 -n 10000 http://127.0.0.1:8080/json
+Requests per second:    42482.15 [#/sec] (mean)
+
+ab -k -c 1000 -n 10000 http://127.0.0.1:8080/json
+Requests per second:    42709.85 [#/sec] (mean)

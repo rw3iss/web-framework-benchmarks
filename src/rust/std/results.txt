@@ -1,0 +1,14 @@
+ab -k -c 50 -n 10000 http://127.0.0.1:8080/
+Requests per second:    15696.89 [#/sec] (mean)
+
+ab -k -c 250 -n 10000 http://127.0.0.1:8080/
+Requests per second:    14255.80 [#/sec] (mean)
+
+ab -k -c 500 -n 10000 http://127.0.0.1:8080/
+Requests per second:    14608.48 [#/sec] (mean)
+
+ab -k -c 1000 -n 10000 http://127.0.0.1:8080/
+Requests per second:    13942.20 [#/sec] (mean)
+
+ab -k -c 10000 -n 10000 http://127.0.0.1:8080/
+Requests per second:    11426.74 [#/sec] (mean)

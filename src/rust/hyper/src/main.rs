@@ -24,7 +24,7 @@ async fn main() {
     let some_state = "state".to_string();
 
     let mut router: Router = Router::new();
-    router.get("/test", Box::new(handler::test_handler));
+    router.get("/", Box::new(handler::text_handler));
     router.get("/json", Box::new(handler::json_handler));
     router.post("/send", Box::new(handler::send_handler));
     router.get("/params/:some_param", Box::new(handler::param_handler));
@@ -41,6 +41,7 @@ async fn main() {
                 route(router_capture.clone(), req, app_state.clone())
             }))
         }
+
     });
 
     let addr = "0.0.0.0:8080".parse().expect("address creation works");

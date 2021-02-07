@@ -1,3 +1,11 @@
+# UPDATE 2/7/2021:
+-See individual results.txt files in each respective language/framework directory.
+-Have mostly just updates Rust and Go benchmarks (the two fastest by far).
+
+
+OLD / OUTDATED BELOW (run on older machine, but still the same indication/benchmark for the most part):
+
+
 ------------------
 Go:
 ------------------
