@@ -74,8 +74,6 @@ dotnet bin/Debug/net5.0/benchmark.dll
 ### Java
 (Todo)
 
-<br/>
-
 
 ## Using Docker:
 If you want to use Docker (this may be outdated, but mostly working):
@@ -92,4 +90,4 @@ _______________
 ## Results:
 
 * See individual 'results.txt' files within the individual framework folders for most recent results.
-* Spoiler: Rust (actix-web and hyper) and Go (fasthttp) are the fastest by far, almost equally.
+* Spoiler: Rust (actix-web and hyper) and Go are the fastest by far, almost equally.
