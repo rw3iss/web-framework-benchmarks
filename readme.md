@@ -1,28 +1,31 @@
 # Benchmarks of Modern Web Frameworks
 
-### Go (net/http), Go (fasthttp), Rust (hyper), Rust (actix-web), Drogon (C++), JustJS (node alternative), .NET Core 5, and more to come.
+This repository houses a myriad of different web technologies for local benchmarking of simple requests (just TEXT and JSON for now). The included technologies/frameworks are:
 
-Include docker container configuration configuration, if desired.
+## Tests:
+- Go (net/http)
+- Go (fasthttp)
+- Rust (hyper)
+- Rust (actix-web)
+- Drogon (C++)
+- JustJS (faster node alternative)
+- .NET Core 5
+- ~~Java (TODO)~~
 
-See results.txt for my local Docker results.
+Each individual framework folders has a 'results.txt' file of the latest results.
 
-Note: Primarily these tests only test TEXT and JSON responses at the moment.
+Note: This repository ncludes Docker container configuration configuration, but not necessary.
 
-## Setup (Mac OS)
+## Setup:
 
-* Generally all benchmarks are classified under src/<language>/<framework>/, and can just be configured by cd'ing to that directory and running:
+Generally all benchmarks are classified under src/\<language>/\<framework>/, and can just be configured by cd'ing to that directory and running:
 ```
 ./setup.sh (if exists)
 ./build.sh
 ./run.sh
 ```
-* If you want to use docker:
-    - Install VS Code - Remote - Container extension
-    - Open folder in VS Code, and 'open in container' when prompted (it will take a while to build the first time - 20 minutes on 2015 Macbook Pro)
-    - Let the container build, and when finished, open terminal
-    - `npm install`
-    - Start any of the given benchmark servers (each of these is set to run on http://localhost:8080)
-    - Tune the parameters in run.js, and then run it: `node run.js` to test any given server below.
+
+## Individual Framework Setup / Remarks:
 
 ### Go:
 ```
@@ -68,13 +71,25 @@ dotnet publish
 dotnet bin/Debug/net5.0/benchmark.dll
 ```
 
-### Todo: Java
+### Java
+(Todo)
+
+<br/>
+
+
+## Using Docker:
+If you want to use Docker (this may be outdated, but mostly working):
+- Install VS Code - Remote - Container extension
+- Open folder in VS Code, and 'open in container' when prompted (it will take a while to build the first time - 20 minutes on 2015 Macbook Pro)
+- Let the container build, and when finished, open terminal
+- `npm install`
+- Start any of the given benchmark servers (each of these is set to run on http://localhost:8080)
+- Tune the parameters in run.js, and then run it: `node run.js` to test any given server below.
 
 _______________
 
 
 ## Results:
 
-* *NOTE*: these are outdated (run from old machine). See individual 'results.txt' files within the individual framework folders for more recent results.
-
-* See ./results.txt for full results (they are outdated, but still comparable).
+* See individual 'results.txt' files within the individual framework folders for most recent results.
+* Spoiler: Rust (actix-web and hyper) and Go (fasthttp) are the fastest by far, almost equally.

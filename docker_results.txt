@@ -1,9 +1,8 @@
-# UPDATE 2/7/2021:
--See individual results.txt files in each respective language/framework directory.
--Have mostly just updates Rust and Go benchmarks (the two fastest by far).
+* Note: This file is outdated, run on an old machine, but still comparable.
 
+* See individual results.txt files in each respective language/framework directory for more modern/latest results.
 
-OLD / OUTDATED BELOW (run on older machine, but still the same indication/benchmark for the most part):
+(These are still comparable/using same source code):
 
 
 ------------------
