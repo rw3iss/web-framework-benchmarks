@@ -1,0 +1,41 @@
+TEXT:
+
+ab -k -c 50 -n 10000 http://127.0.0.1:3000/
+Requests per second:    12157.55 [#/sec] (mean)
+Requests per second:    13244.45 [#/sec] (mean)
+Requests per second:    13430.05 [#/sec] (mean) 
+Requests per second:    13866.32 [#/sec] (mean) 
+Requests per second:    14265.91 [#/sec] (mean) 
+Requests per second:    15036.89 [#/sec] (mean)
+
+ab -k -c 250 -n 10000 http://127.0.0.1:3000/
+Requests per second:    13430.05 [#/sec] (mean) 
+Requests per second:    13646.47 [#/sec] (mean)  
+Requests per second:    13595.82 [#/sec] (mean)
+Requests per second:    13883.74 [#/sec] (mean)
+
+ab -k -c 500 -n 10000 http://127.0.0.1:3000/
+Requests per second:    9688.41 [#/sec] (mean) 
+Requests per second:    12538.40 [#/sec] (mean) 
+Requests per second:    10451.38 [#/sec] (mean) 
+Requests per second:    12688.73 [#/sec] (mean)
+
+ab -k -c 1000 -n 10000 http://127.0.0.1:3000/
+Requests per second:    9617.69 [#/sec] (mean)
+Requests per second:    12882.78 [#/sec] (mean
+Requests per second:    13483.61 [#/sec] (mean)
+Requests per second:    12996.82 [#/sec] (mean) 
+
+
+JSON:
+ab -k -c 50 -n 10000 http://127.0.0.1:3000/json
+Requests per second:    11039.57 [#/sec] (mean) 
+Requests per second:    13781.91 [#/sec] (mean) 
+Requests per second:    15221.97 [#/sec] (mean)  
+Requests per second:    15114.71 [#/sec] (mean)
+
+ab -k -c 500 -n 10000 http://127.0.0.1:3000/json
+Requests per second:    14709.67 [#/sec] (mean) 
+Requests per second:    15319.10 [#/sec] (mean)
+Requests per second:    15003.86 [#/sec] (mean)
+Requests per second:    13387.88 [#/sec] (mean) 
